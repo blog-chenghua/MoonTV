@@ -156,9 +156,9 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
   const { siteName } = useSite();
   if (siteName !== 'MoonTV') {
     menuItems.push({
-      icon: Blog,
-      label: 'TVBOX',
-      href: 'https://chenghua.site',
+      icon: Github,
+      label: '我的博客',
+      href: 'https://blog.chenghua.site',
     });
   }
 
