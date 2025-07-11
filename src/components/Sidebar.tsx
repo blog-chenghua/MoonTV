@@ -148,8 +148,8 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
     },
     {
       icon: Clover,
-      label: '综艺',
-      href: '/douban?type=tv&tag=综艺&title=热门综艺',
+      label: '热门综艺',
+      href: '/douban?type=tv&tag=综艺&title=综艺',
     },
   ];
 
