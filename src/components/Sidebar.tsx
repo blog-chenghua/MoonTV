@@ -134,7 +134,32 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
   const contextValue = {
     isCollapsed,
   };
+  const menuItems = [
+    {
+      icon: Film,
+      label: '热门电影',
+      href: '/douban?type=movie&tag=热门&title=热门电影',
+    },
+    {
+      icon: Tv,
+      label: '热门剧集',
+      href: '/douban?type=tv&tag=热门&title=热门剧集',
+    },
+    {
+      icon: Clover,
+      label: '热门综艺',
+      href: '/douban?type=tv&tag=综艺&title=热门综艺',
+    },
+  ];
 
+  const { siteName } = useSite();
+  if (siteName !== 'MoonTV') {
+    menuItems.push({
+      icon: Github,
+      label: '我的博客',
+      href: 'https://blog.chenghua.site',
+    });
+  }
   return (
     <SidebarContext.Provider value={contextValue}>
       {/* 在移动端隐藏侧边栏 */}
