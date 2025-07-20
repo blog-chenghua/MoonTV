@@ -121,7 +121,10 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
   const contextValue = {
     isCollapsed,
   };
+  const menuItems = [
 
+  ];
+ 
   
 
   return (
