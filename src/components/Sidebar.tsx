@@ -121,8 +121,23 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
   const contextValue = {
     isCollapsed,
   };
-  const menuItems = [
 
+    const menuItems = [
+    {
+      icon: Film,
+      label: '热门电影',
+      href: '/douban?type=movie',
+    },
+    {
+      icon: Tv,
+      label: '热门剧集',
+      href: '/douban?type=tv',
+    },
+    {
+      icon: Clover,
+      label: '热门综艺',
+      href: '/douban?type=show',
+    },
   ];
  
   
