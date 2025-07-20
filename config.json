@@ -3,17 +3,17 @@
   "api_site": {
     "dyttzy": {
       "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
-      "name": "电影天堂资源",
+      "name": "资源站1",
       "detail": "http://caiji.dyttzyapi.com"
     },
     "heimuer": {
       "api": "https://json.heimuer.xyz/api.php/provide/vod",
-      "name": "黑木耳",
+      "name": "资源站2",
       "detail": "https://heimuer.tv"
     },
     "ruyi": {
       "api": "https://cj.rycjapi.com/api.php/provide/vod",
-      "name": "如意资源"
+      "name": "资源站3"
     }
   }
 }
