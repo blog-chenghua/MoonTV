@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCacheTime, getConfig } from '@/lib/config';
 import { searchFromApi } from '@/lib/downstream';
-import { yellowWords } from '@/lib/yellow';
 
 export const runtime = 'edge';
 
@@ -45,16 +44,7 @@ export async function GET(request: Request) {
       .filter(result => result.status === 'fulfilled')
       .map(result => (result as PromiseFulfilledResult<any>).value);
     
-    let flattenedResults = successResults.flat();
-    
-    // 修改：使用可选链和默认值，或者直接启用过滤
-    const disableFilter = (config.SiteConfig as any)?.DisableYellowFilter ?? false;
-    if (!disableFilter) {
-      flattenedResults = flattenedResults.filter((result) => {
-        const typeName = result.type_name || '';
-        return !yellowWords.some((word: string) => typeName.includes(word));
-      });
-    }
+    const flattenedResults = successResults.flat();
 
     const cacheTime = await getCacheTime();
     return NextResponse.json(
