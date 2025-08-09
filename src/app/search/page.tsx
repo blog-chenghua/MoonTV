@@ -260,39 +260,56 @@ function SearchPageClient() {
             </div>
           ) : showResults ? (
             <section className='mb-12'>
-              {/* 标题 */}
+              {/* 标题 - 移除了聚合开关 */}
               <div className='mb-8'>
                 <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
                   搜索结果
                 </h2>
               </div>
               <div
+                key={`search-results-${viewMode}`}
                 className='justify-start grid grid-cols-3 gap-x-2 gap-y-14 sm:gap-y-20 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,_minmax(11rem,_1fr))] sm:gap-x-8'
               >
-                {searchResults.map((item) => (
-                  <div
-                    key={`all-${item.source}-${item.id}`}
-                    className='w-full'
-                  >
-                    <VideoCard
-                      id={item.id}
-                      title={item.title}
-                      poster={item.poster}
-                      episodes={item.episodes.length}
-                      source={item.source}
-                      source_name={item.source_name}
-                      douban_id={item.douban_id?.toString()}
-                      query={
-                        searchQuery.trim() !== item.title
-                          ? searchQuery.trim()
-                          : ''
-                      }
-                      year={item.year}
-                      from='search'
-                      type={item.episodes.length > 1 ? 'tv' : 'movie'}
-                    />
-                  </div>
-                ))}
+                {viewMode === 'agg'
+                  ? aggregatedResults.map(([mapKey, group]) => {
+                      return (
+                        <div key={`agg-${mapKey}`} className='w-full'>
+                          <VideoCard
+                            from='search'
+                            items={group}
+                            query={
+                              searchQuery.trim() !== group[0].title
+                                ? searchQuery.trim()
+                                : ''
+                            }
+                          />
+                        </div>
+                      );
+                    })
+                  : searchResults.map((item) => (
+                      <div
+                        key={`all-${item.source}-${item.id}`}
+                        className='w-full'
+                      >
+                        <VideoCard
+                          id={item.id}
+                          title={item.title}
+                          poster={item.poster}
+                          episodes={item.episodes.length}
+                          source={item.source}
+                          source_name={item.source_name}
+                          douban_id={item.douban_id?.toString()}
+                          query={
+                            searchQuery.trim() !== item.title
+                              ? searchQuery.trim()
+                              : ''
+                          }
+                          year={item.year}
+                          from='search'
+                          type={item.episodes.length > 1 ? 'tv' : 'movie'}
+                        />
+                      </div>
+                    ))}
                 {searchResults.length === 0 && (
                   <div className='col-span-full text-center text-gray-500 py-8 dark:text-gray-400'>
                     未找到相关结果
