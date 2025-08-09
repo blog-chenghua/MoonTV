@@ -1,15 +1,10 @@
 import { NextResponse } from 'next/server';
-
-import { getCacheTime, getConfig } from '@/lib/config';
+import { getAvailableApiSites, getCacheTime } from '@/lib/config';
 import { searchFromApi } from '@/lib/downstream';
-import { yellowWords } from '@/lib/yellow';
-
 export const runtime = 'edge';
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q');
-
   if (!query) {
     const cacheTime = await getCacheTime();
     return NextResponse.json(
@@ -23,37 +18,12 @@ export async function GET(request: Request) {
       }
     );
   }
-
-  const config = await getConfig();
-  const apiSites = config.SourceConfig.filter((site) => !site.disabled);
-
-  // 添加超时控制和错误处理，避免慢接口拖累整体响应
-  const searchPromises = apiSites.map((site) =>
-    Promise.race([
-      searchFromApi(site, query),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error(`${site.name} timeout`)), 20000)
-      )
-    ]).catch(err => {
-      console.warn(`搜索失败 ${site.name}:`, err.message);
-      return []; // 返回空数组而不是抛出错误
-    })
-  );
-
+  const apiSites = await getAvailableApiSites();
+  const searchPromises = apiSites.map((site) => searchFromApi(site, query));
   try {
-    const results = await Promise.allSettled(searchPromises);
-    const successResults = results
-      .filter(result => result.status === 'fulfilled')
-      .map(result => (result as PromiseFulfilledResult<any>).value);
-    let flattenedResults = successResults.flat();
-    if (!config.SiteConfig.DisableYellowFilter) {
-      flattenedResults = flattenedResults.filter((result) => {
-        const typeName = result.type_name || '';
-        return !yellowWords.some((word: string) => typeName.includes(word));
-      });
-    }
+    const results = await Promise.all(searchPromises);
+    const flattenedResults = results.flat();
     const cacheTime = await getCacheTime();
-
     return NextResponse.json(
       { results: flattenedResults },
       {
