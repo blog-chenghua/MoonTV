@@ -265,11 +265,6 @@ function SearchPageClient() {
                 <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
                   搜索结果
                 </h2>
-                {/* 聚合开关 */}
-                <label className='flex items-center gap-2 cursor-pointer select-none'>
-                  <span className='text-sm text-gray-700 dark:text-gray-300'>
-                    聚合
-                  </span>
                   <div className='relative'>
                     <input
                       type='checkbox'
